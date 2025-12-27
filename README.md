@@ -6,9 +6,7 @@
 
 This repository contains a complete hybrid quantum-classical workflow to calculate the ground state energy of the Hydrogen molecule (H2) across dissociation curves. It integrates PySCF and OpenFermion for quantum chemistry with a custom Chaotic Amplitude Control (CAC) solver for Ising optimization, utilizing the Extended Bravyi-Kitaev (XBK) transformation.
 
-================================================================================
-TABLE OF CONTENTS
-================================================================================
+# TABLE OF CONTENTS
 1. Overview
 2. Key Features
 3. Dependencies & Installation
@@ -17,9 +15,8 @@ TABLE OF CONTENTS
 6. Outputs
 7. Licenses, Credits & References
 
-================================================================================
-1. OVERVIEW
-================================================================================
+
+# 1. OVERVIEW
 This project implements a simulation to find the ground state energy of H2 by mapping the electronic structure problem to a Quadratic Unconstrained Binary Optimization (QUBO) problem.
 
 The workflow consists of:
@@ -28,17 +25,13 @@ The workflow consists of:
 3. XBK Transformation: Transforming the problem using auxiliary qubits (r parameter) to map spectral properties to an Ising model.
 4. CAC Simulation: Solving the resulting Ising model using a digital simulation of a Coherent Ising Machine (CIM).
 
-================================================================================
-2. KEY FEATURES
-================================================================================
+# 2. KEY FEATURES
 * Gauss-Jordan Elimination Engine: A robust implementation of linear algebra over finite fields (Rational, Prime, Binary) used for analyzing Hamiltonian symmetries.
 * Chaotic Amplitude Control (CAC): A dynamical systems algorithm that mimics optical pulses in a Coherent Ising Machine to find global minima of spin glass problems.
 * XBK Resolution Sweeping: Iterates through resolution parameters (r=2 to r=6) to demonstrate convergence accuracy.
 * Automated Visualization: Plots the Potential Energy Surface (PES) of the molecule immediately after calculation.
 
-================================================================================
-3. DEPENDENCIES & INSTALLATION
-================================================================================
+# 3. DEPENDENCIES & INSTALLATION
 This project requires a Python environment (3.8+) with specific scientific libraries.
 
 Recommended Operating System: Linux or macOS (due to 'pyscf' availability).
@@ -49,7 +42,7 @@ REQUIRED LIBRARIES:
 * Math & Physics: numpy, scipy, symengine, numba, torch
 * Data & Plotting: pandas, matplotlib
 
-INSTALLATION COMMANDS:
+# INSTALLATION COMMANDS:
 --------------------------------------------------------------------------------
 pip install numpy scipy matplotlib pandas symengine numba torch
 pip install qiskit qiskit-nature qiskit-algorithms
@@ -57,9 +50,8 @@ pip install openfermion openfermionpyscf pyscf
 pip install dimod dwave-ocean-sdk
 --------------------------------------------------------------------------------
 
-================================================================================
-4. USAGE
-================================================================================
+# 4. USAGE
+
 1. Save the provided Python code as 'main.py'.
 2. Run the script:
    
@@ -70,9 +62,7 @@ PROCESS:
 * It loops through XBK resolutions r=2, 3, 4, 5, 6.
 * NOTE: This is computationally intensive and may take time to complete.
 
-================================================================================
-5. METHODOLOGY
-================================================================================
+# 5. METHODOLOGY
 
 [XBK Transformation]
 The Extended Bravyi-Kitaev (XBK) transformation is a method to map the eigenvalue problem of a Hamiltonian into a classical optimization problem. It uses auxiliary qubits (controlled here by the parameter r) to approximate the spectral decomposition, allowing Ising machines to estimate quantum ground states.
@@ -80,9 +70,8 @@ The Extended Bravyi-Kitaev (XBK) transformation is a method to map the eigenvalu
 [Chaotic Amplitude Control (CAC)]
 CAC is an algorithm for solving combinatorial optimization problems. It introduces chaotic feedback loops into the dynamics of the spins (represented as continuous variables), allowing the system to escape local minima more effectively than standard gradient descent.
 
-================================================================================
-6. OUTPUTS
-================================================================================
+# 6. OUTPUTS
+
 The script generates the following artifacts in the working directory:
 
 1. Data Files (.npy):
@@ -97,9 +86,8 @@ The script generates the following artifacts in the working directory:
    - A Matplotlib window displaying "Energy vs. Bond Length for CAC".
    - Curves for all r values are plotted for comparison.
 
-================================================================================
-7. LICENSES, CREDITS & REFERENCES
-================================================================================
+
+# 7. LICENSES, CREDITS & REFERENCES
 This project incorporates code from several open-source and research projects.
 
 A. FIELD/MATRIX CLASS (Gauss-Jordan Elimination)
