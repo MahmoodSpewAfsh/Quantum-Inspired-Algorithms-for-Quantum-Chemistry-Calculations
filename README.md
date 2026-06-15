@@ -1,10 +1,10 @@
-# Hydrogen Energy Simulation using XBK Transformation and CAC
+# Hydrogen and Water Energy Simulation Using XBK Transformation and Coherent Ising Machine Variations (CAC, CFC, SFC) and Simulated Bifurcation variant (dSB)
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![License](https://img.shields.io/badge/License-See_Credits-orange)
 ![Status](https://img.shields.io/badge/Status-Research-green)
 
-This repository contains a complete hybrid quantum-classical workflow to calculate the ground state energy of the Hydrogen molecule (H2) across dissociation curves. It integrates PySCF and OpenFermion for quantum chemistry with CIM variants and dSB solver for Ising optimization, utilizing the Extended Bravyi-Kitaev (XBK) transformation.
+This repository contains a complete hybrid quantum-classical workflow to calculate the ground-state energy of the Hydrogen molecule (H2) and the Water (H2O) Molecules across dissociation curves. It integrates PySCF and OpenFermion for quantum chemistry with CIM variants and dSB solver for Ising optimization, utilizing the Extended Bravyi-Kitaev (XBK) transformation in STO-3G basis.
 
 # TABLE OF CONTENTS
 1. Overview
@@ -17,17 +17,22 @@ This repository contains a complete hybrid quantum-classical workflow to calcula
 
 
 # 1. OVERVIEW
-This project implements a simulation to find the ground state energy of H2 by mapping the electronic structure problem to a Quadratic Unconstrained Binary Optimization (QUBO) problem.
+This project implements a simulation to compute the ground-state energy of H2 and H2O by mapping the electronic-structure problem to a Quadratic Unconstrained Binary Optimization (QUBO) problem.
 
 The workflow consists of:
 1. Hamiltonian Generation: Using PySCF and OpenFermion.
 2. Symmetry Reduction: Applying Parity Tapering to reduce qubit count.
 3. XBK Transformation: Transforming the problem using auxiliary qubits (r parameter) to map spectral properties to an Ising model.
-4. CAC Simulation: Solving the resulting Ising model using a digital simulation of a Coherent Ising Machine (CIM).
+4. CIM and SB Simulation: Solving the resulting Ising model using a digital simulation of CIM and SB variants.
 
 # 2. KEY FEATURES
 * Gauss-Jordan Elimination Engine: A robust implementation of linear algebra over finite fields (Rational, Prime, Binary) used for analyzing Hamiltonian symmetries.
+* Coherent Ising Machine (CIM): A dynamical optimization approach inspired by networks of optical parametric oscillators, designed to solve Ising spin optimization problems by evolving toward low-energy spin configurations.
+* Simulated Bifurcation (SB): A physics-inspired optimizer that uses bifurcation dynamics of coupled oscillators to search for low-energy Ising states.
 * Chaotic Amplitude Control (CAC): A dynamical systems algorithm that mimics optical pulses in a Coherent Ising Machine to find global minima of spin glass problems.
+* * Separated Feedback Control (SFC): A Coherent Ising Machine variant that employs separate feedback channels to stabilize dynamics and improve optimization performance.
+* Chaotic Feedback Control (CFC): A Coherent Ising Machine variant that incorporates nonlinear chaotic feedback to enhance exploration of complex energy landscapes.
+* Discrete Simulated Bifurcation (dSB): A discrete-time implementation of the Simulated Bifurcation algorithm for solving Ising optimization problems through oscillator-inspired dynamics.
 * XBK Resolution Sweeping: Iterates through resolution parameters (r=2 to r=6) to demonstrate convergence accuracy.
 * Automated Visualization: Plots the Potential Energy Surface (PES) of the molecule immediately after calculation.
 
@@ -52,10 +57,10 @@ pip install dimod dwave-ocean-sdk
 
 # 4. USAGE
 
-for each variant run the relevant jupyter notebook file
+For each variant, run the relevant file
 
 PROCESS:
-* The script calculates the energy for bond lengths ranging from 0.2A to 4.0A.
+* The script calculates the energy for bond lengths ranging from 0.2 Å to 4.0 Å.
 * It loops through XBK resolutions r=2, 3, 4, 5, 6.
 * NOTE: This is computationally intensive and may take time to complete.
 
