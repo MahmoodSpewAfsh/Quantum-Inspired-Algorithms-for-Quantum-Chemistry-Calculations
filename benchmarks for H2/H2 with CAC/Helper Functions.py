@@ -1,7 +1,7 @@
 # @title Helper-Functions
 ###Required Helper Functions, Ref.: https://github.com/jcopenh/Quantum-Chemistry-with-Annealers.git
 '''
-Helper functions to construct Pauli operator Hamiltonian
+Helper functions to construct the Pauli operator Hamiltonian
 '''
 
 #Returns molecular geometry for a given molecule and bond length
