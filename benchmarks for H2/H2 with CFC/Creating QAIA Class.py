@@ -1,1 +1,178 @@
+class QAIA:
+    r"""
+    The base class of QAIA.
 
+    This class contains the basic and common functions of all the algorithms.
+
+    Args:
+        J (Union[numpy.array, csr_matrix]): The coupling matrix with shape :math:`(N x N)`.
+        h (numpy.array): The external field with shape :math:`(N x 1)`.
+        x (numpy.array): The initialized spin value with shape :math:`(N x batch_size)`. Default: ``None``.
+        n_iter (int): The number of iterations. Default: ``1000``.
+        batch_size (int): The number of samples. Default: ``1``.
+    """
+
+    # pylint: disable=too-many-arguments
+    def __init__(self, J, h=None, x=None, n_iter=1000, batch_size=1):
+        """Construct a QAIA algorithm."""
+        self.J = J
+        if h is not None and len(h.shape) < 2:
+            h = h[:, np.newaxis]
+        self.h = h
+        self.x = x
+        # The number of spins
+        self.N = self.J.shape[0]
+        self.n_iter = n_iter
+        self.batch_size = batch_size
+
+    def initialize(self):
+        """Randomly initialize spin values."""
+        self.x = 0.02 * (np.random.rand(self.N, self.batch_size) - 0.5)
+
+    def calc_cut(self, x=None):
+        r"""
+        Calculate cut value.
+
+        Args:
+            x (numpy.array): The spin value with shape :math:`(N x batch_size)`.
+                If ``None``, the initial spin will be used. Default: ``None``.
+        """
+        if x is None:
+            sign = np.sign(self.x)
+        else:
+            sign = np.sign(x)
+
+        return 0.25 * np.sum(self.J.dot(sign) * sign, axis=0) - 0.25 * self.J.sum()
+
+    def calc_energy(self, x=None):
+        r"""
+        Calculate energy.
+
+        Args:
+            x (numpy.array): The spin value with shape :math:`(N x batch_size)`.
+                If ``None``, the initial spin will be used. Default: ``None``.
+        """
+        if x is None:
+            sign = np.sign(self.x)
+        else:
+            sign = np.sign(x)
+
+        if self.h is None:
+            return -0.5 * np.sum(self.J.dot(sign) * sign, axis=0), sign
+        return -0.5 * np.sum(self.J.dot(sign) * sign, axis=0, keepdims=True) - self.h.T.dot(sign), sign
+
+
+class OverflowException(Exception):
+    r"""
+    Custom exception class for handling overflow errors in numerical calculations.
+
+    Args:
+        message: Exception message string, defaults to "Overflow error".
+    """
+
+    def __init__(self, message="Overflow error"):
+        self.message = message
+        super().__init__(self.message)
+"""Coherent Ising Machine with chaotic feedback control algorithm."""
+# pylint: disable=invalid-name
+
+
+
+class CFC(QAIA):
+    r"""
+    Coherent Ising Machine with chaotic feedback control algorithm.
+
+    Reference: `Coherent Ising machines with optical error correction
+    circuits <https://onlinelibrary.wiley.com/doi/full/10.1002/qute.202100077>`_.
+
+    Args:
+        J (Union[numpy.array, csr_matrix]): The coupling matrix with shape :math:`(N x N)`.
+        h (numpy.array): The external field with shape :math:`(N, )`.
+        x (numpy.array): The initialized spin value with shape :math:`(N x batch_size)`. Default: ``None``.
+        n_iter (int): The number of iterations. Default: ``1000``.
+        batch_size (int): The number of sampling. Default: ``1``.
+        dt (float): The step size. Default: ``0.1``.
+    """
+
+    # pylint: disable=too-many-arguments,too-many-instance-attributes
+    def __init__(
+        self,
+        J,
+        h=None,
+        x=None,
+        n_iter=1000,
+        batch_size=1,
+        dt=0.1,
+    ):
+        """Construct CFC algorithm."""
+        super().__init__(J, h, x, n_iter, batch_size)
+        self.J = csr_matrix(self.J)
+        self.dt = dt
+        # The number of first iterations
+        self.Tr = int(0.9 * self.n_iter)
+        # The number of additional iterations
+        self.Tp = self.n_iter - self.Tr
+        self.N = self.J.shape[0]
+        # pumping parameters
+        self.p = np.hstack([np.linspace(-1, 1, self.Tr), np.ones(self.Tp)])
+        # target amplitude
+        self.alpha = 1.0
+        # coupling strength
+        self.xi = np.sqrt(2 * self.N / np.sum(self.J**2))
+        # rate of change of error variables
+        self.beta = 0.15
+        self.initialize()
+
+    def initialize(self):
+        """Initialize spin values and error variables."""
+        if self.x is None:
+            self.x = np.random.normal(0, 0.1, size=(self.N, self.batch_size))
+
+        if self.x.shape[0] != self.N:
+            raise ValueError(f"The size of x {self.x.shape[0]} is not equal to the number of spins {self.N}")
+
+        self.e = np.ones_like(self.x)
+
+    # pylint: disable=attribute-defined-outside-init
+    # def update(self):
+    #     """Dynamical evolution."""
+    #     for i in range(self.n_iter):
+    #         if self.h is None:
+    #             z = self.xi * self.e * (self.J @ self.x)
+    #         else:
+    #             z = self.xi * self.e * (self.J @ self.x + self.h)
+    #         self.x = self.x + (-self.x**3 + (self.p[i] - 1) * self.x + z) * self.dt
+    #         self.e = self.e + (-self.beta * self.e * (z**2 - self.alpha)) * self.dt
+
+    #         cond = np.abs(self.x) > 1.5
+    #         self.x = np.where(cond, 1.5 * np.sign(self.x), self.x)
+    #         self.e = np.where(self.e < 0.01, 0.01, self.e)
+    def update(self):
+        """Dynamical evolution while storing spin signs and energies at every iteration."""
+        # Lists to store history of spin signs and energies
+        spin_history = []
+        energy_history = []
+
+        for i in range(self.n_iter):
+            if self.h is None:
+                z = self.xi * self.e * (self.J @ self.x)
+            else:
+                z = self.xi * self.e * (self.J @ self.x + self.h)
+
+            # Update x and error variable e
+            self.x = self.x + (-self.x**3 + (self.p[i] - 1) * self.x + z) * self.dt
+            self.e = self.e + (-self.beta * self.e * (z**2 - self.alpha)) * self.dt
+
+            # Enforce saturation limits on x and e
+            cond = np.abs(self.x) > 1.5
+            self.x = np.where(cond, 1.5 * np.sign(self.x), self.x)
+            self.e = np.where(self.e < 0.01, 0.01, self.e)
+
+            # Calculate the energy using the sign of the current x
+            energy, sign = self.calc_energy(self.x)
+            # Store a copy of the sign and energy at this iteration
+            spin_history.append(sign.copy())
+            energy_history.append(energy.copy())
+
+        # Return the history of spins (signs) and energies
+        return spin_history, energy_history
