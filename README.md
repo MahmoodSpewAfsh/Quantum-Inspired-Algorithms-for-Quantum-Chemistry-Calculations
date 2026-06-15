@@ -82,8 +82,10 @@ The script generates the following artifacts in the working directory:
 
 
 1. Visualization:
-   - A Matplotlib window displaying "Energy vs. Bond Length for ".
+   - A Matplotlib window displaying "Molecule Energy vs. Bond Length with specific variant".
    - Curves for all r values are plotted for comparison.
+
+* Note: Please note that the multishot result is only achieved with the "CFC" variant, as the variant with the best performance based on our numerical result.
 
 
 # 7. LICENSES, CREDITS & REFERENCES
