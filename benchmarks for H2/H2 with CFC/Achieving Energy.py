@@ -71,5 +71,5 @@ for bond_length in bond_lengths:
         Tx += t
         all_energies[r].append(XBK_energy)
 
-# Map back to names expected by the plotting code
+# Map back to energies
 energy2, energy3, energy4, energy5, energy1 = [all_energies[r] for r in r_values]
