@@ -9,7 +9,7 @@ class QAIA:
         h (numpy.array): The external field with shape :math:`(N x 1)`.
         x (numpy.array): The initialized spin value with shape :math:`(N x batch_size)`. Default: ``None``.
         n_iter (int): The number of iterations. Default: ``1000``.
-        batch_size (int): The number of sampling. Default: ``1``.
+        batch_size (int): The number of samples. Default: ``1``.
     """
 
     # pylint: disable=too-many-arguments
