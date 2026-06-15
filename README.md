@@ -50,9 +50,11 @@ REQUIRED LIBRARIES:
 # INSTALLATION COMMANDS:
 --------------------------------------------------------------------------------
 pip install numpy scipy matplotlib pandas symengine numba torch
-pip install qiskit qiskit-nature qiskit-algorithms
+pip install qiskit
+pip install qiskit-algorithms
+pip install qiskit-nature
+pip install dwave-ocean-sdk
 pip install openfermion openfermionpyscf pyscf
-pip install dimod dwave-ocean-sdk
 --------------------------------------------------------------------------------
 
 # 4. USAGE
@@ -60,7 +62,9 @@ pip install dimod dwave-ocean-sdk
 For each variant, run the relevant file
 
 PROCESS:
-* The script calculates the energy for bond lengths ranging from 0.2 Å to 4.0 Å.
+* The script "Benchmark for H2" calculates the energy for bond lengths ranging from 0.2 Å to 4.0 Å for four variants of CIM and SB.
+* First of all, please install all packages and libraries in "quantum_utils.py", and after that, the linear_algebra scripts in the "linear-algebra.py" file.
+* For every variant, please first run the "Creating QAIA Class.py", then "Helper Functions.py", and after that, "Applying XBK transformation and variant function.py", then "Achieving Energy.py", and at the end "Plotting and Saving the Result.py".
 * It loops through XBK resolutions r=2, 3, 4, 5, 6.
 * NOTE: This is computationally intensive and may take time to complete.
 
@@ -78,7 +82,7 @@ The script generates the following artifacts in the working directory:
 
 
 1. Visualization:
-   - A Matplotlib window displaying "Energy vs. Bond Length for CAC".
+   - A Matplotlib window displaying "Energy vs. Bond Length for ".
    - Curves for all r values are plotted for comparison.
 
 
