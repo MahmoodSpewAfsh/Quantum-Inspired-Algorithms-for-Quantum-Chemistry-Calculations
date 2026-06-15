@@ -1,3 +1,10 @@
+#Saving the results
+np.save("CACH2r=2", energy2)
+np.save("CACH2r=3", energy3)
+np.save("CACH2r=4", energy4)
+np.save("CACH2r=5", energy5)
+np.save("CACH2r=6", energy1)
+
 # Define a colormap for better color differentiation
 colors = ['purple', 'blue', 'green', 'cyan', 'red']
 markers = ['o', 's', 'D', 'x', '^']
@@ -50,9 +57,3 @@ ax.grid(True, linestyle='--', alpha=0.7)
 
 plt.tight_layout()
 plt.show()
-
-np.save("CACH2r=2", energy2)
-np.save("CACH2r=3", energy3)
-np.save("CACH2r=4", energy4)
-np.save("CACH2r=5", energy5)
-np.save("CACH2r=6", energy1)
