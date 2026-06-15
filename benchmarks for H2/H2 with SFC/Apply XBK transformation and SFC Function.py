@@ -1,3 +1,4 @@
+###Ref.: https://github.com/jcopenh/Quantum-Chemistry-with-Annealers.git
 #Applies XBK transformation to an OpenFermion QubitOperator
 def XBK_transform(op, r, p):
 
