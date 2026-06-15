@@ -57,6 +57,17 @@ pip install dwave-ocean-sdk
 pip install openfermion openfermionpyscf pyscf
 --------------------------------------------------------------------------------
 
+The version of the package used in this repository is as follows:
+qiskit: 2.4.2
+qiskit_algorithms: 0.4.0
+qiskit_nature: 0.8.0
+openfermion: 1.7.1
+pyscf: 2.13.1
+dimod: 0.12.21
+numpy: 2.0.2
+scipy: 1.16.3
+pandas: 2.2.2
+
 # 4. USAGE
 
 For each variant, run the relevant file
